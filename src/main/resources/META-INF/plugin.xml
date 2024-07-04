@@ -32,5 +32,9 @@
                 class="org.ma5d.onlymyfiles.ShowProjectNameAction" text="ShowProjectNameAction">
             <add-to-group group-id="HelpMenu" anchor="after" relative-to-action="About"/>
         </action>
+
+        <action id="FilterProjectFilesAction" class="org.ma5d.onlymyfiles.FilterProjectFilesAction" text="Filter Project Files" description="Filter files in the project view">
+            <add-to-group group-id="ProjectViewPopupMenu" anchor="last"/>
+        </action>
     </actions>
 </idea-plugin>
