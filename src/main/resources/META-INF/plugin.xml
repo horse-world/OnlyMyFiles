@@ -27,4 +27,10 @@
   <extensions defaultExtensionNs="com.intellij">
 
   </extensions>
+    <actions>
+        <action id="org.ma5d.onlymyfiles.plugin.ShowProjectNameAction"
+                class="org.ma5d.onlymyfiles.ShowProjectNameAction" text="ShowProjectNameAction">
+            <add-to-group group-id="HelpMenu" anchor="after" relative-to-action="About"/>
+        </action>
+    </actions>
 </idea-plugin>
