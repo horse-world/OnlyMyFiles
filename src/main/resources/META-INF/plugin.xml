@@ -1,19 +1,15 @@
-<!--suppress PluginXmlValidity -->
+
 <idea-plugin>
     <id>org.ma5d.OnlyMyFiles</id>
     <name>OnlyMyFiles</name>
-    <vendor email="ma5d@qq.com" url="https://www.ma5d.com">YourCompany</vendor>
-    <description>
-      Filter files in the project view
-  </description>
+    <vendor email="ma5d@qq.com" url="https://www.ma5d.com">ma5d</vendor>
+    <description>Filter files in the project view by projectViewNodeDecorator</description>
     <depends>com.intellij.modules.platform</depends>
     <extensions defaultExtensionNs="com.intellij">
 
     </extensions>
-    <actions>
-        <action id="FilterProjectFilesAction" class="org.ma5d.onlymyfiles.FilterProjectFilesAction"
-                text="Filter Project Files" description="Filter files in the project view">
-            <add-to-group group-id="ProjectViewPopupMenu" anchor="last"/>
-        </action>
-    </actions>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <treeStructureProvider implementation="org.ma5d.onlymyfiles.GitMeOnlyTreeStructureProvider"/>
+    </extensions>
 </idea-plugin>
