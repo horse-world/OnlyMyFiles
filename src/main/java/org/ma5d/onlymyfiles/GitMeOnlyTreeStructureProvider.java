@@ -14,36 +14,30 @@ import java.util.*;
 
 public class GitMeOnlyTreeStructureProvider implements TreeStructureProvider {
 
-    ArrayList<AbstractTreeNode<?>> nodes = new ArrayList<>();
+    ArrayList<AbstractTreeNode<?>> nodes;
     String userName = "ma";
 
     @Override
     public @NotNull Collection<AbstractTreeNode<?>> modify(@NotNull AbstractTreeNode<?> parent, @NotNull Collection<AbstractTreeNode<?>> children, ViewSettings settings) {
-
+        nodes = new ArrayList<>();
         try {
             BufferedReader reader = Runtime.getRuntime().exec("git config --get user.name").inputReader();
             userName = reader.readLine();
             reader.close();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        for (AbstractTreeNode<?> child : children) {
-            if (!(child instanceof BasePsiNode)) {
-                continue;
-            }
-            if (child instanceof PsiDirectoryNode) {
-                try {
+            for (AbstractTreeNode<?> child : children) {
+                if (!(child instanceof BasePsiNode)) {
+                    continue;
+                }
+                if (child instanceof PsiDirectoryNode) {
                     String path = Objects.requireNonNull(((PsiDirectoryNode) child).getVirtualFile()).getPath();
                     String name = child.getProject().getName();
                     if (!path.contains(name)) continue;
                     if (path.contains("build")) continue;
                     dfs(nodes, (PsiDirectoryNode) child);
-                } catch (NullPointerException | IOException e) {
-                    throw new RuntimeException(e);
                 }
             }
-            nodes.add(child);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
         return nodes;
     }
@@ -56,14 +50,14 @@ public class GitMeOnlyTreeStructureProvider implements TreeStructureProvider {
                 List<String> list = new ArrayList<>(Arrays.stream(path.split("/")).toList());
                 list.remove(list.size() - 1);
                 String directory = String.join("/", list);
-                List<String> res = Runtime.getRuntime().exec(String.format("cd %s && git log --author=%s %s", directory, userName, path)).inputReader().lines().toList();
-                if (res.isEmpty()) return;
+                List<String> res = Runtime.getRuntime().exec(String.format("cmd /c cd %s && git log --author=%s %s", directory, userName, path)).inputReader().lines().toList();
+                if (res.isEmpty()) continue;
                 nodes.add(child);
             }
 
             if (child instanceof PsiDirectoryNode) {
-                List<String> res = Runtime.getRuntime().exec(String.format("cd %s && git log --author=%s %s", path, userName, path)).inputReader().lines().toList();
-                if (res.isEmpty()) return;
+                List<String> res = Runtime.getRuntime().exec(String.format("cmd /c cd %s && git log --author=%s %s", path, userName, path)).inputReader().lines().toList();
+                if (res.isEmpty()) continue;
                 nodes.add(child);
                 dfs(nodes, (PsiDirectoryNode) child);
             }
