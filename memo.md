@@ -41,3 +41,6 @@ git push -f origin <branch_name>
     </actions>
 </idea-plugin>
 ```
+
+modify 方法触发方式：每次展开触发，不是一次加载触发的。
+目录不会触发，文件会触发一次。
